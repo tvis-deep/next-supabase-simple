@@ -1,0 +1,113 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
+import { Todos } from "@/components/Todos";
+
+const TODOS_SQL = `-- Run this in Supabase SQL editor
+create table if not exists public.todos (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  task text not null,
+  is_complete boolean not null default false,
+  inserted_at timestamptz not null default now()
+);
+
+alter table public.todos enable row level security;
+
+create policy "Users can view their own todos"
+on public.todos for select
+using (auth.uid() = user_id);
+
+create policy "Users can insert their own todos"
+on public.todos for insert
+with check (auth.uid() = user_id);
+
+create policy "Users can update their own todos"
+on public.todos for update
+using (auth.uid() = user_id);
+
+create policy "Users can delete their own todos"
+on public.todos for delete
+using (auth.uid() = user_id);
+`;
+
+export default function AccountPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const init = async () => {
+      const supabase = getSupabaseBrowserClient();
+      const { data } = await supabase.auth.getSession();
+      const session = data.session;
+      if (!session) {
+        router.replace("/");
+        return;
+      }
+      setEmail(session.user.email ?? "");
+      setLoading(false);
+    };
+    void init();
+  }, [router]);
+
+  const signOut = async () => {
+    const supabase = getSupabaseBrowserClient();
+    await supabase.auth.signOut();
+    router.replace("/");
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 px-6 py-16">
+        <div className="mx-auto max-w-3xl text-sm text-slate-600">Loading…</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <main className="mx-auto flex max-w-3xl flex-col gap-6 px-6 py-16">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight">Account</h1>
+            <p className="mt-1 text-sm text-slate-600">
+              Signed in as <span className="font-medium">{email}</span>
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="rounded-md border bg-white px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50"
+            >
+              Home
+            </Link>
+            <button
+              onClick={() => void signOut()}
+              className="rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800"
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+
+        <Todos />
+
+        <div className="rounded-xl border bg-white p-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900">
+            Supabase SQL (todos table)
+          </h2>
+          <p className="mt-1 text-sm text-slate-600">
+            Create the table + RLS policies:
+          </p>
+          <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-950 p-4 text-xs text-slate-100">
+            {TODOS_SQL}
+          </pre>
+        </div>
+      </main>
+    </div>
+  );
+}
