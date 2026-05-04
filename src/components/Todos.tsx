@@ -101,7 +101,7 @@ export function Todos() {
   if (loading) return <p className="text-sm text-slate-600">Loading…</p>;
   if (!userId)
     return (
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-slate-600 dark:text-slate-300">
         Sign in first to see your todos.
       </p>
     );
@@ -110,7 +110,7 @@ export function Todos() {
     <div className="w-full rounded-xl border border-slate-200 bg-white p-6 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100">
       <div className="flex items-end gap-3">
         <div className="flex-1">
-          <label className="block text-sm font-medium text-slate-700">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
             New todo
           </label>
           <input
@@ -136,16 +136,18 @@ export function Todos() {
 
       <ul className="mt-6 space-y-2">
         {sortedTodos.length === 0 ? (
-          <li className="text-sm text-slate-600">No todos yet.</li>
+          <li className="text-sm text-slate-600 dark:text-slate-300">
+            No todos yet.
+          </li>
         ) : (
           sortedTodos.map((todo) => (
             <li
               key={todo.id}
-              className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
+              className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 px-3 py-2 dark:border-slate-800"
             >
               <button
                 onClick={() => void toggleTodo(todo)}
-                className="flex-1 text-left text-sm"
+                className="flex-1 text-left text-sm text-slate-900 dark:text-slate-100"
               >
                 <span
                   className={

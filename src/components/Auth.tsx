@@ -65,7 +65,9 @@ export function Auth() {
 
       {isAuthed ? (
         <div className="mt-4 flex items-center justify-between gap-3">
-          <p className="text-sm text-slate-700">You’re signed in.</p>
+          <p className="text-sm text-slate-700 dark:text-slate-200">
+            You’re signed in.
+          </p>
           <button
             onClick={() => void signOut()}
             className="rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800"
@@ -75,7 +77,7 @@ export function Auth() {
         </div>
       ) : (
         <>
-          <label className="mt-4 block text-sm font-medium text-slate-700">
+          <label className="mt-4 block text-sm font-medium text-slate-700 dark:text-slate-200">
             Email
           </label>
           <input
