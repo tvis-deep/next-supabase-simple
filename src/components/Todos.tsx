@@ -126,7 +126,7 @@ export function Todos() {
         <button
           onClick={() => void addTodo()}
           disabled={!newTask.trim()}
-          className="h-10 rounded-md bg-slate-900 px-4 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+          className="h-10 rounded-md bg-slate-900 px-4 text-sm font-medium text-white shadow-sm ring-1 ring-slate-900/10 hover:bg-slate-800 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60 dark:bg-slate-100 dark:text-slate-900 dark:ring-white/10 dark:hover:bg-white"
         >
           Add
         </button>
@@ -152,8 +152,8 @@ export function Todos() {
                 <span
                   className={
                     todo.is_complete
-                      ? "text-slate-500 line-through"
-                      : "text-slate-900"
+                      ? "text-slate-500 line-through dark:text-slate-400"
+                      : "text-slate-900 dark:text-slate-100"
                   }
                 >
                   {todo.task}
@@ -161,7 +161,7 @@ export function Todos() {
               </button>
               <button
                 onClick={() => void deleteTodo(todo)}
-                className="rounded-md px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
+                className="rounded-md border border-red-200 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-100 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200 dark:hover:bg-red-950/70"
               >
                 Delete
               </button>

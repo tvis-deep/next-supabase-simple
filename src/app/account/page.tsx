@@ -87,7 +87,7 @@ export default function AccountPage() {
             </Link>
             <button
               onClick={() => void signOut()}
-              className="rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800"
+              className="rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
             >
               Sign out
             </button>
