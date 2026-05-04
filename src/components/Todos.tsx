@@ -107,7 +107,7 @@ export function Todos() {
     );
 
   return (
-    <div className="w-full rounded-xl border bg-white p-6 shadow-sm">
+    <div className="w-full rounded-xl border border-slate-200 bg-white p-6 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100">
       <div className="flex items-end gap-3">
         <div className="flex-1">
           <label className="block text-sm font-medium text-slate-700">
@@ -119,7 +119,7 @@ export function Todos() {
             onKeyDown={(e) => {
               if (e.key === "Enter") void addTodo();
             }}
-            className="mt-2 w-full rounded-md border px-3 py-2 text-sm outline-none ring-slate-200 focus:ring-2"
+            className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-slate-200 placeholder:text-slate-400 focus:ring-2 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:ring-slate-800 dark:placeholder:text-slate-500"
             placeholder="Buy milk"
           />
         </div>

@@ -57,9 +57,9 @@ export function Auth() {
   };
 
   return (
-    <div className="w-full max-w-md rounded-xl border bg-white p-6 shadow-sm">
+    <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100">
       <h2 className="text-lg font-semibold">Sign in</h2>
-      <p className="mt-1 text-sm text-slate-600">
+      <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
         Use a magic link (passwordless).
       </p>
 
@@ -83,7 +83,7 @@ export function Auth() {
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="you@example.com"
-            className="mt-2 w-full rounded-md border px-3 py-2 text-sm outline-none ring-slate-200 focus:ring-2"
+            className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-slate-200 placeholder:text-slate-400 focus:ring-2 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:ring-slate-800 dark:placeholder:text-slate-500"
           />
           <button
             onClick={() => void sendMagicLink()}

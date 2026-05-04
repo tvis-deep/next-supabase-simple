@@ -69,19 +69,19 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <main className="mx-auto flex max-w-3xl flex-col gap-6 px-6 py-16">
         <div className="flex items-center justify-between gap-3">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">Account</h1>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
               Signed in as <span className="font-medium">{email}</span>
             </p>
           </div>
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="rounded-md border bg-white px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50"
+              className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
             >
               Home
             </Link>
@@ -96,11 +96,11 @@ export default function AccountPage() {
 
         <Todos />
 
-        <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <h2 className="text-sm font-semibold text-slate-900">
             Supabase SQL (todos table)
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
             Create the table + RLS policies:
           </p>
           <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-950 p-4 text-xs text-slate-100">
