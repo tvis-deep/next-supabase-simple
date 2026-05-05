@@ -66,12 +66,6 @@ export function Landing() {
               Profile
             </Link>
             <Link
-              href="/billing"
-              className="hidden rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 sm:inline-flex"
-            >
-              Billing
-            </Link>
-            <Link
               href="/admin"
               className="hidden rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 sm:inline-flex"
             >

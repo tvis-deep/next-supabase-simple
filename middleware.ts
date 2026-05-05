@@ -31,7 +31,7 @@ export async function middleware(req: NextRequest) {
 
   const pathname = req.nextUrl.pathname;
 
-  const protectedPaths = ["/account", "/profile", "/billing"];
+  const protectedPaths = ["/account", "/profile"];
   const isProtected =
     protectedPaths.some((p) => pathname === p || pathname.startsWith(`${p}/`)) ||
     pathname.startsWith("/admin");
@@ -67,6 +67,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/account/:path*", "/profile/:path*", "/billing/:path*", "/admin/:path*"],
+  matcher: ["/account/:path*", "/profile/:path*", "/admin/:path*"],
 };
-

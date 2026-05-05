@@ -5,13 +5,9 @@ export const dynamic = "force-dynamic";
 
 const ADMIN_SQL = `-- Admin + audit + billing schema (run in Supabase SQL editor)
 
--- 1) profiles: admin flag + Stripe fields
+-- 1) profiles: admin flag
 alter table public.profiles
-  add column if not exists is_admin boolean not null default false,
-  add column if not exists stripe_customer_id text,
-  add column if not exists stripe_subscription_id text,
-  add column if not exists stripe_price_id text,
-  add column if not exists subscription_status text;
+  add column if not exists is_admin boolean not null default false;
 
 -- Optional: make sure users cannot self-escalate to admin
 drop policy if exists "Users can update their own profile" on public.profiles;
