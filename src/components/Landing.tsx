@@ -65,6 +65,18 @@ export function Landing() {
             >
               Profile
             </Link>
+            <Link
+              href="/billing"
+              className="hidden rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 sm:inline-flex"
+            >
+              Billing
+            </Link>
+            <Link
+              href="/admin"
+              className="hidden rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 sm:inline-flex"
+            >
+              Admin
+            </Link>
             <button
               onClick={() => setOpen(true)}
               className="rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-slate-900/10 hover:bg-slate-800 active:translate-y-px dark:bg-slate-100 dark:text-slate-900 dark:ring-white/10 dark:hover:bg-white"
