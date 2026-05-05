@@ -23,6 +23,7 @@ create table if not exists public.profiles (
   full_name text,
   bio text,
   avatar_url text,
+  is_admin boolean not null default false,
   updated_at timestamptz
 );
 
@@ -34,11 +35,16 @@ using (auth.uid() = id);
 
 create policy "Users can insert their own profile"
 on public.profiles for insert
-with check (auth.uid() = id);
+with check (auth.uid() = id and is_admin = false);
 
-create policy "Users can update their own profile"
+-- Prevent self-escalation: users can update their row, but cannot change is_admin.
+create policy "Users can update their own profile (no admin change)"
 on public.profiles for update
-using (auth.uid() = id);
+using (auth.uid() = id)
+with check (
+  auth.uid() = id
+  and is_admin = (select p.is_admin from public.profiles p where p.id = auth.uid())
+);
 `;
 
 const STORAGE_NOTE = `-- Storage setup (one-time)

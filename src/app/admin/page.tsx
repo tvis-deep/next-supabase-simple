@@ -13,6 +13,17 @@ alter table public.profiles
   add column if not exists stripe_price_id text,
   add column if not exists subscription_status text;
 
+-- Optional: make sure users cannot self-escalate to admin
+drop policy if exists "Users can update their own profile" on public.profiles;
+drop policy if exists "Users can update their own profile (no admin change)" on public.profiles;
+create policy "Users can update their own profile (no admin change)"
+on public.profiles for update
+using (auth.uid() = id)
+with check (
+  auth.uid() = id
+  and is_admin = (select p.is_admin from public.profiles p where p.id = auth.uid())
+);
+
 -- 2) audit logs
 create table if not exists public.audit_logs (
   id uuid primary key default gen_random_uuid(),
@@ -91,10 +102,12 @@ export default async function AdminPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-200">
-          This page uses the Supabase <span className="font-semibold">service role</span>{" "}
-          key on the server. Lock it down before production (SSR auth + admin-only
-          access).
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-200">
+          Access is protected by middleware: only signed-in users with{" "}
+          <code className="rounded bg-emerald-100 px-1 py-0.5 text-emerald-950 dark:bg-emerald-900/30 dark:text-emerald-100">
+            profiles.is_admin = true
+          </code>{" "}
+          can open this page.
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
