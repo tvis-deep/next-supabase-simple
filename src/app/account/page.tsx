@@ -85,6 +85,12 @@ export default function AccountPage() {
             >
               Home
             </Link>
+            <Link
+              href="/profile"
+              className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+            >
+              Profile
+            </Link>
             <button
               onClick={() => void signOut()}
               className="rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
