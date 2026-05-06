@@ -1,4 +1,5 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { type SupabaseClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
 
 let browserClient: SupabaseClient | null = null;
 
@@ -18,7 +19,7 @@ export function getSupabaseBrowserClient(): SupabaseClient {
     );
   }
 
-  browserClient = createClient(supabaseUrl, supabaseAnonKey);
+  // Uses cookie-based auth, so Next.js middleware/server can read sessions.
+  browserClient = createBrowserClient(supabaseUrl, supabaseAnonKey);
   return browserClient;
 }
-
