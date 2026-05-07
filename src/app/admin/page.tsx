@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createSupabaseServerClient } from "@/lib/supabaseServer";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 
 export const dynamic = "force-dynamic";
@@ -48,10 +50,25 @@ using (
 `;
 
 async function requireAdmin() {
-  // In a real app, do cookie-based auth and check auth.uid().
-  // Here we keep it minimal: guard by an env flag or by a single admin user in DB.
-  // We'll render the page but show a warning if no admin is configured.
-  return true;
+  const supabase = await createSupabaseServerClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/?login=1");
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (!profile?.is_admin) {
+    redirect("/");
+  }
 }
 
 export default async function AdminPage() {
