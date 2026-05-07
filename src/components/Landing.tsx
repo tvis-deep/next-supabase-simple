@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Auth } from "@/components/Auth";
 
 function Feature({
   title,
@@ -22,18 +20,6 @@ function Feature({
 }
 
 export function Landing() {
-  const [open, setOpen] = useState(false);
-  const dialogRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open]);
-
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-slate-800 dark:bg-slate-950/70">
@@ -71,12 +57,12 @@ export function Landing() {
             >
               Admin
             </Link>
-            <button
-              onClick={() => setOpen(true)}
-              className="rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-slate-900/10 hover:bg-slate-800 active:translate-y-px dark:bg-slate-100 dark:text-slate-900 dark:ring-white/10 dark:hover:bg-white"
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-slate-900/10 hover:bg-slate-800 active:translate-y-px dark:bg-slate-100 dark:text-slate-900 dark:ring-white/10 dark:hover:bg-white"
             >
               Login
-            </button>
+            </Link>
           </div>
         </div>
       </header>
@@ -99,12 +85,12 @@ export function Landing() {
             </p>
 
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <button
-                onClick={() => setOpen(true)}
+              <Link
+                href="/login"
                 className="inline-flex h-11 items-center justify-center rounded-md bg-slate-900 px-5 text-sm font-semibold text-white shadow-sm ring-1 ring-slate-900/10 hover:bg-slate-800 active:translate-y-px dark:bg-slate-100 dark:text-slate-900 dark:ring-white/10 dark:hover:bg-white"
               >
                 Login to continue
-              </button>
+              </Link>
               <Link
                 href="/account"
                 className="inline-flex h-11 items-center justify-center rounded-md border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
@@ -162,50 +148,15 @@ export function Landing() {
         <footer className="mt-16 border-t border-slate-200 pt-8 text-sm text-slate-600 dark:border-slate-800 dark:text-slate-300">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p>Made to be a minimal, hackable starter.</p>
-            <button
-              onClick={() => setOpen(true)}
+            <Link
+              href="/login"
               className="inline-flex items-center justify-center rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
             >
               Login
-            </button>
+            </Link>
           </div>
         </footer>
       </main>
-
-      {open ? (
-        <div
-          className="fixed inset-0 z-50 grid place-items-center bg-black/50 px-6 py-10"
-          onMouseDown={(e) => {
-            if (e.target === e.currentTarget) setOpen(false);
-          }}
-        >
-          <div
-            ref={dialogRef}
-            className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-xl dark:border-slate-800 dark:bg-slate-950"
-          >
-            <div className="flex items-center justify-between gap-3 pb-3">
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                Login
-              </p>
-              <button
-                onClick={() => setOpen(false)}
-                className="rounded-md px-2 py-1 text-sm text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-900"
-                aria-label="Close"
-              >
-                Close
-              </button>
-            </div>
-            <Auth />
-            <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
-              After signing in, go to{" "}
-              <Link className="underline" href="/account">
-                /account
-              </Link>
-              .
-            </p>
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 }
