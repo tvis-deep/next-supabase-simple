@@ -27,17 +27,20 @@ export function Auth() {
   }, []);
 
   const sendMagicLink = async () => {
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) return;
+
     const supabase = getSupabaseBrowserClient();
     setStatus("sending");
     setMessage("");
 
     const { error } = await supabase.auth.signInWithOtp({
-      email,
+      email: trimmedEmail,
       options: {
         emailRedirectTo:
           typeof window === "undefined"
             ? undefined
-            : `${window.location.origin}/account`,
+            : `${window.location.origin}/auth/callback?next=/account`,
       },
     });
 
@@ -69,6 +72,7 @@ export function Auth() {
             You’re signed in.
           </p>
           <button
+            type="button"
             onClick={() => void signOut()}
             className="rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
           >
@@ -87,9 +91,13 @@ export function Auth() {
             placeholder="you@example.com"
             className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-slate-200 placeholder:text-slate-400 focus:ring-2 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:ring-slate-800 dark:placeholder:text-slate-500"
           />
+          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+            {email.trim() ? "Ready to send." : "Enter an email to enable the button."}
+          </p>
           <button
+            type="button"
             onClick={() => void sendMagicLink()}
-            disabled={!email || status === "sending"}
+            disabled={!email.trim() || status === "sending"}
             className="mt-4 w-full rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {status === "sending" ? "Sending..." : "Send magic link"}
