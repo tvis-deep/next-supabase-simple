@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Auth } from "@/components/Auth";
 
 export default function LoginPage() {
   return (
@@ -21,9 +20,30 @@ export default function LoginPage() {
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
             Use a magic link (passwordless).
           </p>
-          <div className="mt-4">
-            <Auth />
-          </div>
+
+          <form className="mt-4" action="/auth/magic-link" method="post">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
+              Email
+            </label>
+            <input
+              name="email"
+              type="email"
+              required
+              placeholder="you@example.com"
+              className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-slate-200 placeholder:text-slate-400 focus:ring-2 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:ring-slate-800 dark:placeholder:text-slate-500"
+            />
+            <button
+              type="submit"
+              className="mt-4 w-full rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800"
+            >
+              Send magic link
+            </button>
+
+            <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
+              After you click the link in your email, you’ll be signed in.
+            </p>
+          </form>
+
           <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
             After signing in, go to{" "}
             <Link className="underline" href="/account">

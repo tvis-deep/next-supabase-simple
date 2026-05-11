@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -10,6 +10,12 @@ export function Auth() {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string>("");
   const [isAuthed, setIsAuthed] = useState(false);
+  const emailRef = useRef<HTMLInputElement | null>(null);
+
+  const canSend = useMemo(() => {
+    const v = (emailRef.current?.value ?? email).trim();
+    return v.length > 0 && status !== "sending";
+  }, [email, status]);
 
   useEffect(() => {
     const init = async () => {
@@ -26,8 +32,17 @@ export function Auth() {
     return () => sub.subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    // Some browsers autofill without firing onChange/onInput; sync once shortly after mount.
+    const t = window.setTimeout(() => {
+      const v = (emailRef.current?.value ?? "").trim();
+      if (v && v !== email) setEmail(v);
+    }, 300);
+    return () => window.clearTimeout(t);
+  }, [email]);
+
   const sendMagicLink = async () => {
-    const trimmedEmail = email.trim();
+    const trimmedEmail = (emailRef.current?.value ?? email).trim();
     if (!trimmedEmail) return;
 
     const supabase = getSupabaseBrowserClient();
@@ -85,20 +100,33 @@ export function Auth() {
             Email
           </label>
           <input
+            ref={emailRef}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
             type="email"
             placeholder="you@example.com"
             className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-slate-200 placeholder:text-slate-400 focus:ring-2 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:ring-slate-800 dark:placeholder:text-slate-500"
           />
           <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-            {email.trim() ? "Ready to send." : "Enter an email to enable the button."}
+            {canSend
+              ? "Ready to send."
+              : "Enter an email to enable the button."}{" "}
+            <span className="ml-2 text-slate-400 dark:text-slate-500">
+              (debug: status={status}, emailLen={email.trim().length})
+            </span>
           </p>
           <button
             type="button"
+            onMouseDown={() => setMessage("Button pressed…")}
             onClick={() => void sendMagicLink()}
-            disabled={!email.trim() || status === "sending"}
-            className="mt-4 w-full rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+            // Do not rely on disabled attribute; some users reported the button being unclickable.
+            aria-disabled={!canSend}
+            className={`mt-4 w-full rounded-md px-3 py-2 text-sm font-medium text-white ${
+              canSend
+                ? "bg-slate-900 hover:bg-slate-800"
+                : "cursor-not-allowed bg-slate-400"
+            }`}
           >
             {status === "sending" ? "Sending..." : "Send magic link"}
           </button>
