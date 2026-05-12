@@ -20,7 +20,9 @@ export async function POST(request: Request) {
   const hdrs = await headers();
   const host = hdrs.get("x-forwarded-host") ?? hdrs.get("host") ?? "localhost:3000";
   const proto = hdrs.get("x-forwarded-proto") ?? "http";
-  const origin = `${proto}://${host}`;
+  const inferredOrigin = `${proto}://${host}`;
+  const origin =
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? inferredOrigin;
 
   const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     auth: { persistSession: false },
@@ -41,4 +43,3 @@ export async function POST(request: Request) {
 
   return NextResponse.redirect(new URL("/login?sent=1", request.url));
 }
-
